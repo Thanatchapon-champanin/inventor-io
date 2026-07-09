@@ -1,0 +1,172 @@
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { ThemedText } from '@/components/themed-text';
+import { PRIMARY, PRIMARY_DARK } from '@/constants/inventor-theme';
+
+// -----------------------------------------------------------------------
+// Top header — hamburger (opens menu) · brand · avatar
+// Drop this at the top of any screen: <AppHeader title="Home" />
+// -----------------------------------------------------------------------
+export function AppHeader({ title = 'Inventor. io' }: { title?: string }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <>
+      <View style={styles.header}>
+        <Pressable hitSlop={10} onPress={() => setMenuOpen(true)}>
+          <Ionicons name="menu" size={24} color="#1A1A2E" />
+        </Pressable>
+
+        <ThemedText type="defaultSemiBold" style={styles.headerTitle}>
+          {title}
+        </ThemedText>
+
+        <Pressable hitSlop={10} style={styles.avatar}>
+          <Ionicons name="person" size={16} color="#fff" />
+        </Pressable>
+      </View>
+
+      <SideMenu visible={menuOpen} onClose={() => setMenuOpen(false)} />
+    </>
+  );
+}
+
+// -----------------------------------------------------------------------
+// Side menu — full-screen purple overlay, matches "3. Menu" in the design
+// -----------------------------------------------------------------------
+const MENU_ITEMS: { label: string; icon: keyof typeof Ionicons.glyphMap; route: string }[] = [
+  { label: 'Home', icon: 'home-outline', route: '/' },
+  { label: 'Products', icon: 'pricetags-outline', route: '/products' },
+  { label: 'Categories', icon: 'folder-outline', route: '/categories' },
+  { label: 'Stores', icon: 'storefront-outline', route: '/stores' },
+  { label: 'Finances', icon: 'cash-outline', route: '/finances' },
+  { label: 'Settings', icon: 'settings-outline', route: '/settings' },
+];
+
+function SideMenu({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const go = (route: string) => {
+    onClose();
+    // Routes that don't exist yet in your app will simply need a screen file.
+    router.push(route as never);
+  };
+
+  return (
+    <Modal visible={visible} animationType="fade" transparent onRequestClose={onClose}>
+      <View style={styles.menuOverlay}>
+        <SafeAreaView style={styles.menuContainer}>
+          <View style={styles.menuTopRow}>
+            <ThemedText type="defaultSemiBold" style={styles.menuBrand}>
+              Inventor. io
+            </ThemedText>
+            <Pressable hitSlop={10} onPress={onClose}>
+              <Ionicons name="close" size={24} color="#fff" />
+            </Pressable>
+          </View>
+
+          <View style={styles.menuList}>
+            {MENU_ITEMS.map((item) => (
+              <Pressable
+                key={item.label}
+                onPress={() => go(item.route)}
+                style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}>
+                <Ionicons name={item.icon} size={18} color="#fff" style={styles.menuIcon} />
+                <ThemedText type="defaultSemiBold" style={styles.menuLabel}>
+                  {item.label}
+                </ThemedText>
+              </Pressable>
+            ))}
+          </View>
+
+          <Pressable
+            onPress={() => {
+              onClose();
+              router.replace('/login');
+            }}
+            style={styles.logoutButton}>
+            <ThemedText type="defaultSemiBold" style={styles.logoutText}>
+              Log out
+            </ThemedText>
+          </Pressable>
+        </SafeAreaView>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+  },
+  headerTitle: {
+    color: PRIMARY,
+    fontSize: 17,
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: PRIMARY,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Menu
+  menuOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+  },
+  menuContainer: {
+    width: '78%',
+    height: '100%',
+    backgroundColor: PRIMARY,
+    paddingHorizontal: 22,
+    justifyContent: 'space-between',
+  },
+  menuTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 8,
+  },
+  menuBrand: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  menuList: {
+    flex: 1,
+    justifyContent: 'center',
+    gap: 22,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  menuItemPressed: {
+    opacity: 0.7,
+  },
+  menuIcon: {
+    width: 20,
+  },
+  menuLabel: {
+    color: '#fff',
+    fontSize: 17,
+  },
+  logoutButton: {
+    alignItems: 'center',
+    paddingVertical: 24,
+    borderTopWidth: 1,
+    borderTopColor: PRIMARY_DARK,
+  },
+  logoutText: {
+    color: 'rgba(255,255,255,0.85)',
+  },
+});

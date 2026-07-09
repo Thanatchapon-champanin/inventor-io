@@ -1,0 +1,109 @@
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { ThemedText } from '@/components/themed-text';
+import { PRIMARY, PRIMARY_DARK } from '@/constants/inventor-theme';
+
+export default function LoginScreen() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // TODO: replace with real auth call
+    router.replace('/');
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <SafeAreaView style={[styles.flex, styles.container]}>
+        <View style={styles.center}>
+          <ThemedText type="title" style={styles.brand}>
+            Inventor. io
+          </ThemedText>
+
+          <View style={styles.form}>
+            <ThemedText type="small" style={styles.label}>
+              Username
+            </ThemedText>
+            <TextInput
+              value={username}
+              onChangeText={setUsername}
+              placeholder=""
+              placeholderTextColor="rgba(255,255,255,0.6)"
+              style={styles.input}
+              autoCapitalize="none"
+            />
+
+            <ThemedText type="small" style={[styles.label, { marginTop: 16 }]}>
+              Password
+            </ThemedText>
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+            />
+          </View>
+
+          <Pressable
+            onPress={handleLogin}
+            style={({ pressed }) => [styles.loginButton, pressed && styles.loginButtonPressed]}>
+            <ThemedText type="defaultSemiBold" style={styles.loginButtonText}>
+              Log in
+            </ThemedText>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+  container: {
+    backgroundColor: PRIMARY,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+  },
+  brand: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: '800',
+    marginBottom: 40,
+  },
+  form: {
+    gap: 4,
+  },
+  label: {
+    color: 'rgba(255,255,255,0.75)',
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    height: 44,
+    paddingHorizontal: 14,
+    marginTop: 6,
+  },
+  loginButton: {
+    backgroundColor: PRIMARY_DARK,
+    borderRadius: 10,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 36,
+  },
+  loginButtonPressed: {
+    opacity: 0.85,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 15,
+  },
+});S

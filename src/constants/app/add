@@ -1,0 +1,19 @@
+import { StyleSheet } from 'react-native';
+
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+
+// This screen is never navigated to directly — the "Add" tab button in
+// app-tabs.tsx intercepts the press (e.preventDefault) and opens a modal
+// instead. Kept here only so expo-router has a valid route file.
+export default function AddScreen() {
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedText type="small">Add product flow goes here.</ThemedText>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+});
