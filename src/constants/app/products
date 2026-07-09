@@ -22,7 +22,7 @@ type Product = {
 };
 
 const PRODUCTS: Product[] = [
-  { id: '1', name: 'Unisex T-Shirt White', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#F5F5F7' },
+  { id: '1', name: 'Code Shirt - Developer Edition', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#1E1E1E' },
   { id: '2', name: 'Unisex T-Shirt Black', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#2B2B33' },
   { id: '3', name: 'Rain Jacket Male', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#F4C13B' },
   { id: '4', name: 'Bomber Jacket Male', stock: 12, category: 'T-shirts', locations: 3, status: 'Sold out', color: '#F2C9C4' },
