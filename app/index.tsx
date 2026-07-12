@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ThemedText } from '@/components/themed-text';
-import { PRIMARY, PRIMARY_DARK } from '@/constants/inventor-theme';
+import { ThemedText } from '../components/themed-text';
+import { PRIMARY, PRIMARY_DARK } from '../constants/inventor-theme';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -12,7 +12,7 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     // TODO: replace with real auth call
-    router.replace('/');
+    router.replace('/(tabs)');
   };
 
   return (
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 15,
   },
-});S
+});

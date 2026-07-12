@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-import { AppHeader } from '@/components/app-header';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { AppHeader } from '../../components/app-header';
+import { ThemedText } from '../../components/themed-text';
+import { ThemedView } from '../../components/themed-view';
 
 export default function CategoriesScreen() {
   return (

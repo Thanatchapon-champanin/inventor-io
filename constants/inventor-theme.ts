@@ -1,0 +1,9 @@
+export const PRIMARY = '#208AEF';
+export const PRIMARY_DARK = '#1A6BC7';
+export const PRIMARY_SOFT = '#E6F4FE';
+export const SUCCESS = '#10B981';
+export const SUCCESS_SOFT = '#D1FAE5';
+export const CARD = '#FFFFFF';
+export const BORDER = '#E5E5E5';
+export const MUTED = '#9CA3AF';
+export const RADIUS = 12;

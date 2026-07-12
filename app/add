@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '../components/themed-text';
+import { ThemedView } from '../components/themed-view';
 
 // This screen is never navigated to directly — the "Add" tab button in
 // app-tabs.tsx intercepts the press (e.preventDefault) and opens a modal

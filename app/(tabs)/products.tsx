@@ -3,10 +3,10 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
-import { AppHeader } from '@/components/app-header';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS, SUCCESS_SOFT } from '@/constants/inventor-theme';
+import { AppHeader } from '../../components/app-header';
+import { ThemedText } from '../../components/themed-text';
+import { ThemedView } from '../../components/themed-view';
+import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS, SUCCESS_SOFT } from '../../constants/inventor-theme';
 
 // -----------------------------------------------------------------------
 // Mock data — swap for your real product source
@@ -14,6 +14,7 @@ import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS, SUCCESS_SO
 type Product = {
   id: string;
   name: string;
+  brand: string;
   stock: number;
   category: string;
   locations: number;
@@ -22,12 +23,12 @@ type Product = {
 };
 
 const PRODUCTS: Product[] = [
-  { id: '1', name: 'Code Shirt - Developer Edition', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#1E1E1E' },
-  { id: '2', name: 'Unisex T-Shirt Black', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#2B2B33' },
-  { id: '3', name: 'Rain Jacket Male', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#F4C13B' },
-  { id: '4', name: 'Bomber Jacket Male', stock: 12, category: 'T-shirts', locations: 3, status: 'Sold out', color: '#F2C9C4' },
-  { id: '5', name: 'Denim Shorts Women', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#8FB6D9' },
-  { id: '6', name: 'Unisex Socks Black', stock: 12, category: 'T-shirts', locations: 3, status: 'Active', color: '#3A4A3E' },
+  { id: '1', name: 'Nike Air Max 90', brand: 'Nike', stock: 12, category: 'Sneakers', locations: 3, status: 'Active', color: '#FF6B6B' },
+  { id: '2', name: 'Adidas Ultraboost', brand: 'Adidas', stock: 8, category: 'Sneakers', locations: 3, status: 'Active', color: '#4ECDC4' },
+  { id: '3', name: 'Supreme Box Logo Hoodie', brand: 'Supreme', stock: 5, category: 'Hoodies', locations: 2, status: 'Active', color: '#FF0000' },
+  { id: '4', name: 'Off-White Industrial Belt', brand: 'Off-White', stock: 0, category: 'Accessories', locations: 1, status: 'Sold out', color: '#FFE66D' },
+  { id: '5', name: 'Gucci Ace Sneakers', brand: 'Gucci', stock: 15, category: 'Sneakers', locations: 4, status: 'Active', color: '#95E1D3' },
+  { id: '6', name: 'Balenciaga Triple S', brand: 'Balenciaga', stock: 7, category: 'Sneakers', locations: 3, status: 'Active', color: '#F38181' },
 ];
 
 // -----------------------------------------------------------------------
@@ -40,10 +41,13 @@ function ProductRow({ product }: { product: Product }) {
       onPress={() => router.push(`/product/${product.id}` as never)}
       style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}>
       <View style={[styles.thumb, { backgroundColor: product.color }]}>
-        <Ionicons name="shirt-outline" size={20} color="rgba(0,0,0,0.25)" />
+        <Ionicons name="pricetag-outline" size={24} color="rgba(0,0,0,0.25)" />
       </View>
 
       <View style={styles.rowMain}>
+        <ThemedText type="small" style={styles.brandText}>
+          {product.brand}
+        </ThemedText>
         <ThemedText type="defaultSemiBold" numberOfLines={1}>
           {product.name}
         </ThemedText>
@@ -183,9 +187,9 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   thumb: {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
+    width: 80,
+    height: 80,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -196,6 +200,12 @@ const styles = StyleSheet.create({
   rowMeta: {
     color: MUTED,
     fontSize: 11,
+  },
+  brandText: {
+    color: PRIMARY,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    fontSize: 10,
   },
   statusPill: {
     flexDirection: 'row',
