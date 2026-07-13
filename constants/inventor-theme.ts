@@ -1,6 +1,6 @@
-export const PRIMARY = '#208AEF';
-export const PRIMARY_DARK = '#1A6BC7';
-export const PRIMARY_SOFT = '#E6F4FE';
+export const PRIMARY = '#8B5CF6';
+export const PRIMARY_DARK = '#7C3AED';
+export const PRIMARY_SOFT = '#EDE9FE';
 export const SUCCESS = '#10B981';
 export const SUCCESS_SOFT = '#D1FAE5';
 export const CARD = '#FFFFFF';

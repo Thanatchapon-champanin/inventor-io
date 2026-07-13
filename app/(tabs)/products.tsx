@@ -6,7 +6,7 @@ import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { AppHeader } from '../../components/app-header';
 import { ThemedText } from '../../components/themed-text';
 import { ThemedView } from '../../components/themed-view';
-import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS, SUCCESS_SOFT } from '../../constants/inventor-theme';
+import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS } from '../../constants/inventor-theme';
 
 // -----------------------------------------------------------------------
 // Mock data — swap for your real product source
@@ -17,18 +17,15 @@ type Product = {
   brand: string;
   stock: number;
   category: string;
-  locations: number;
+  location: string;
   status: 'Active' | 'Sold out';
   color: string;
 };
 
 const PRODUCTS: Product[] = [
-  { id: '1', name: 'Nike Air Max 90', brand: 'Nike', stock: 12, category: 'Sneakers', locations: 3, status: 'Active', color: '#FF6B6B' },
-  { id: '2', name: 'Adidas Ultraboost', brand: 'Adidas', stock: 8, category: 'Sneakers', locations: 3, status: 'Active', color: '#4ECDC4' },
-  { id: '3', name: 'Supreme Box Logo Hoodie', brand: 'Supreme', stock: 5, category: 'Hoodies', locations: 2, status: 'Active', color: '#FF0000' },
-  { id: '4', name: 'Off-White Industrial Belt', brand: 'Off-White', stock: 0, category: 'Accessories', locations: 1, status: 'Sold out', color: '#FFE66D' },
-  { id: '5', name: 'Gucci Ace Sneakers', brand: 'Gucci', stock: 15, category: 'Sneakers', locations: 4, status: 'Active', color: '#95E1D3' },
-  { id: '6', name: 'Balenciaga Triple S', brand: 'Balenciaga', stock: 7, category: 'Sneakers', locations: 3, status: 'Active', color: '#F38181' },
+  { id: '1', name: 'Oversized Graphic T-Shirt White', brand: 'Fashion', stock: 25, category: 'Tops', location: 'Main Store', status: 'Active', color: '#F5F5F5' },
+  { id: '2', name: 'High-Waisted Denim Jeans Black', brand: 'Fashion', stock: 14, category: 'Bottoms', location: 'Main Store', status: 'Active', color: '#2C2C2C' },
+  { id: '3', name: 'Pastel Knit Cardigan Yellow', brand: 'Fashion', stock: 8, category: 'Outerwear', location: 'Warehouse A', status: 'Active', color: '#F9E79F' },
 ];
 
 // -----------------------------------------------------------------------
@@ -55,12 +52,12 @@ function ProductRow({ product }: { product: Product }) {
           Stock: {product.stock} in stock · Category: {product.category}
         </ThemedText>
         <ThemedText type="small" style={styles.rowMeta}>
-          Location: {product.locations} stores
+          Location: {product.location}
         </ThemedText>
 
-        <View style={[styles.statusPill, { backgroundColor: isActive ? SUCCESS_SOFT : '#FCEAEA' }]}>
-          <View style={[styles.statusDot, { backgroundColor: isActive ? SUCCESS : '#E14848' }]} />
-          <ThemedText type="small" style={{ color: isActive ? SUCCESS : '#E14848', fontWeight: '600' }}>
+        <View style={[styles.statusPill, { backgroundColor: isActive ? PRIMARY_SOFT : '#FCEAEA' }]}>
+          <View style={[styles.statusDot, { backgroundColor: isActive ? PRIMARY : '#E14848' }]} />
+          <ThemedText type="small" style={{ color: isActive ? PRIMARY : '#E14848', fontWeight: '600' }}>
             {product.status}
           </ThemedText>
         </View>
