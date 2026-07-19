@@ -8,7 +8,7 @@ import { ThemedView } from '../../components/themed-view';
 import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS } from '../../constants/inventor-theme';
 
 // Import ข้อมูลสินค้าจากไฟล์ JSON นอกสุดของโปรเจกต์มาวนลูปแสดงผล
-import productsData from '../../../products.json';
+import productsData from '../../products.json';
 
 const ACTIVITY = [
   { label: 'New items', value: '741', trend: '+2%' },
