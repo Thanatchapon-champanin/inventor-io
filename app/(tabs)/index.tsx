@@ -1,14 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Link } from 'expo-router';
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { AppHeader } from '../../components/app-header';
 import { ThemedText } from '../../components/themed-text';
 import { ThemedView } from '../../components/themed-view';
 import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS } from '../../constants/inventor-theme';
 
-// -----------------------------------------------------------------------
-// Mock data — swap for your real stock/sales source
-// -----------------------------------------------------------------------
+// Import ข้อมูลสินค้าจากไฟล์ JSON นอกสุดของโปรเจกต์มาวนลูปแสดงผล
+import productsData from '../../../products.json';
+
 const ACTIVITY = [
   { label: 'New items', value: '741', trend: '+2%' },
   { label: 'New orders', value: '123', trend: '+3%' },
@@ -32,16 +33,13 @@ const CATEGORIES: { icon: keyof typeof Ionicons.glyphMap }[] = [
 ];
 
 const QUICK_STATS = [
-  { label: 'Low stock items', value: '12' },
-  { label: 'Item categories', value: '6' },
-  { label: 'Refunded items', value: '1' },
+  { label: 'Low stock items', value: '1' },
+  { label: 'Item categories', value: '1' },
+  { label: 'Refunded items', value: '0' },
 ];
 
 const STORES = ['Manchester, UK', 'Yorkshire, UK', 'Hull, UK', 'Leicester, UK'];
 
-// -----------------------------------------------------------------------
-// Small building blocks
-// -----------------------------------------------------------------------
 function SectionCard({ children }: { children: React.ReactNode }) {
   return <View style={styles.sectionCard}>{children}</View>;
 }
@@ -61,16 +59,32 @@ function SectionTitle({ children, onSeeMore }: { children: string; onSeeMore?: (
   );
 }
 
-// -----------------------------------------------------------------------
-// Screen
-// -----------------------------------------------------------------------
 export default function HomeDashboard() {
   return (
     <ThemedView style={styles.container}>
       <AppHeader title="Inventor. io" />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        {/* Recent activity */}
+        
+        {/* ส่วนแสดงรายการสินค้าดึงมาจากไฟล์ JSON (แก้ตามโจทย์ UI + JSON + Navigation) */}
+        <SectionTitle>Our Products</SectionTitle>
+        <View style={styles.productsContainer}>
+          {productsData.map((item) => (
+            <Link href={`/product/${item.id}`} asChild key={item.id}>
+              <Pressable style={styles.productCard}>
+                <Image source={{ uri: item.image_url }} style={styles.productCardImage} />
+                <View style={styles.productCardContent}>
+                  <ThemedText type="defaultSemiBold" numberOfLines={1}>{item.name}</ThemedText>
+                  <ThemedText type="small" style={styles.productCardSub}>
+                    {item.category} • {item.stock_text}
+                  </ThemedText>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color={MUTED} style={{ marginRight: 4 }} />
+              </Pressable>
+            </Link>
+          ))}
+        </View>
+
         <SectionTitle>Recent activity</SectionTitle>
         <View style={styles.activityRow}>
           {ACTIVITY.map((item) => (
@@ -88,7 +102,6 @@ export default function HomeDashboard() {
           ))}
         </View>
 
-        {/* Sales chart */}
         <SectionCard>
           <SectionTitle onSeeMore={() => {}}>Sales</SectionTitle>
           <View style={styles.chart}>
@@ -103,7 +116,6 @@ export default function HomeDashboard() {
           </View>
         </SectionCard>
 
-        {/* Top item categories */}
         <SectionTitle onSeeMore={() => {}}>Top item categories</SectionTitle>
         <View style={styles.categoryGrid}>
           {CATEGORIES.map((cat, i) => (
@@ -113,7 +125,6 @@ export default function HomeDashboard() {
           ))}
         </View>
 
-        {/* Quick stats */}
         <SectionCard>
           {QUICK_STATS.map((stat, i) => (
             <View
@@ -129,7 +140,6 @@ export default function HomeDashboard() {
           ))}
         </SectionCard>
 
-        {/* Stores list */}
         <SectionTitle>Stores list</SectionTitle>
         <SectionCard>
           {STORES.map((store, i) => (
@@ -172,7 +182,34 @@ const styles = StyleSheet.create({
     borderColor: BORDER,
   },
 
-  // Recent activity
+  // สไตล์สำหรับรายการสินค้า JSON ลิงก์ข้ามหน้า
+  productsContainer: {
+    gap: 10,
+  },
+  productCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: CARD,
+    borderRadius: RADIUS,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  productCardImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: '#F5F5F5',
+  },
+  productCardContent: {
+    flex: 1,
+    paddingHorizontal: 12,
+  },
+  productCardSub: {
+    color: MUTED,
+    marginTop: 2,
+  },
+
   activityRow: {
     flexDirection: 'row',
     gap: 10,
@@ -189,7 +226,6 @@ const styles = StyleSheet.create({
   activityLabel: { color: MUTED, marginTop: 2 },
   activityTrend: { color: SUCCESS, marginTop: 6, fontWeight: '600' },
 
-  // Chart
   chart: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -211,7 +247,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 
-  // Categories
   categoryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -226,7 +261,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  // Quick stats
   statRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -239,7 +273,6 @@ const styles = StyleSheet.create({
     color: MUTED,
   },
 
-  // Stores
   storeRow: {
     flexDirection: 'row',
     alignItems: 'center',

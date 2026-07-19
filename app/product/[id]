@@ -1,32 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Image } from 'react-native';
 
 import { AppHeader } from '../../components/app-header';
 import { ThemedText } from '../../components/themed-text';
 import { ThemedView } from '../../components/themed-view';
 import { BORDER, CARD, MUTED, PRIMARY, RADIUS, SUCCESS } from '../../constants/inventor-theme';
 
-// -----------------------------------------------------------------------
-// Mock lookup — swap for your real product source (fetch by `id`)
-// -----------------------------------------------------------------------
-const PRODUCT = {
-  name: 'Unisex T-Shirt White',
-  brand: 'Unnamed Brand',
-  color: '#F0F0F0',
-  sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-  category: 'T-shirts',
-  gender: 'Male, Female',
-  code: '719-12',
-  orderName: 'SATB-771',
-  updated: 'January 29, 2025 at 2:34 PM',
-  stores: [
-    { name: 'Manchester, UK', available: true },
-    { name: 'Yorkshire, UK', available: true },
-    { name: 'Hull, UK', available: false },
-    { name: 'Leicester, UK', available: true },
-  ],
-};
+// Import ข้อมูลสินค้าจากไฟล์ JSON นอกสุดของโปรเจกต์
+import productsData from '../../../products.json';
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
@@ -44,57 +26,78 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 export default function ProductDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
+  // ค้นหาสินค้าที่มี ID ตรงกับข้อมูลที่กดนำทางเข้ามา
+  const PRODUCT = productsData.find((item) => item.id === id);
+
+  // ป้องกันแอปค้างในกรณีที่ค้นหาข้อมูลสินค้าตาม ID นั้นไม่พบ
+  if (!PRODUCT) {
+    return (
+      <ThemedView style={styles.container}>
+        <AppHeader title="Products" />
+        <View style={styles.notFoundWrap}>
+          <Ionicons name="alert-circle-outline" size={48} color={MUTED} />
+          <ThemedText style={{ marginTop: 8 }}>Product not found</ThemedText>
+        </View>
+      </ThemedView>
+    );
+  }
+
+  // จำลองข้อมูลร้านค้าที่พร้อมจำหน่าย (อ้างอิงจากจานวนสาขาใน JSON)
+  const mockStores = [
+    { name: 'Manchester, UK', available: true },
+    { name: 'Yorkshire, UK', available: true },
+    { name: 'Hull, UK', available: PRODUCT.location_count > 3 },
+    { name: 'Leicester, UK', available: PRODUCT.stock > 5 },
+  ];
+
   return (
     <ThemedView style={styles.container}>
       <AppHeader title="Products" />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.card}>
-          <View style={[styles.image, { backgroundColor: PRODUCT.color }]}>
-            <Ionicons name="shirt-outline" size={64} color="rgba(0,0,0,0.2)" />
+          
+          {/* ส่วนแสดงรูปภาพสินค้าจริงที่ดึงมาจาก URL ใน JSON */}
+          <View style={styles.imageContainer}>
+            <Image 
+              source={{ uri: PRODUCT.image_url }} 
+              style={styles.productImage}
+              resizeMode="cover"
+            />
           </View>
 
           <ThemedText type="title" style={styles.name}>
             {PRODUCT.name}
           </ThemedText>
-          <ThemedText type="small" style={styles.brand}>
-            {PRODUCT.brand}
+          <ThemedText type="small" style={[
+            styles.brand, 
+            { color: PRODUCT.badge_status === 'Active' ? SUCCESS : '#E14848' }
+          ]}>
+            Status: {PRODUCT.badge_status}
           </ThemedText>
-
-          <ThemedText type="small" style={styles.sizesLabel}>
-            Available sizes
-          </ThemedText>
-          <View style={styles.sizesRow}>
-            {PRODUCT.sizes.map((size) => (
-              <View key={size} style={styles.sizeChip}>
-                <ThemedText type="small" style={styles.sizeChipText}>
-                  {size}
-                </ThemedText>
-              </View>
-            ))}
-          </View>
 
           <View style={styles.infoBlock}>
             <InfoRow label="Category" value={PRODUCT.category} />
-            <InfoRow label="Gender" value={PRODUCT.gender} />
-            <InfoRow label="Product code" value={PRODUCT.code} />
-            <InfoRow label="Order name" value={PRODUCT.orderName} />
+            <InfoRow label="Stock Available" value={`${PRODUCT.stock} units`} />
+            <InfoRow label="Current Status" value={PRODUCT.stock_text} />
+            <InfoRow label="Available Stores" value={PRODUCT.location_text} />
           </View>
 
-          {/* QR placeholder */}
+          {/* QR Code ส่วนแสดงข้อมูลจำลองตามรหัสสินค้า */}
           <View style={styles.qrWrap}>
             <Ionicons name="qr-code" size={96} color="#1A1A2E" />
+            <ThemedText type="small" style={{ color: MUTED, marginTop: 4 }}>Product ID: {PRODUCT.id}</ThemedText>
           </View>
 
           <ThemedText type="defaultSemiBold" style={styles.storeTitle}>
             Store availability
           </ThemedText>
-          {PRODUCT.stores.map((store, i) => (
+          {mockStores.map((store, i) => (
             <View
               key={store.name}
               style={[
                 styles.storeRow,
-                i === PRODUCT.stores.length - 1 && { borderBottomWidth: 0 },
+                i === mockStores.length - 1 && { borderBottomWidth: 0 },
               ]}>
               <ThemedText type="small">{store.name}</ThemedText>
               <Ionicons
@@ -106,7 +109,7 @@ export default function ProductDetailsScreen() {
           ))}
 
           <ThemedText type="small" style={styles.updated}>
-            Last updated {PRODUCT.updated}
+            Last updated Today
           </ThemedText>
         </View>
       </ScrollView>
@@ -127,34 +130,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: BORDER,
   },
-  image: {
+  imageContainer: {
     width: '100%',
-    height: 180,
+    height: 200,
     borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: 'hidden',
+    backgroundColor: '#F5F5F5',
     marginBottom: 14,
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
   },
   name: { fontSize: 18 },
-  brand: { color: PRIMARY, marginTop: 2, marginBottom: 14 },
-
-  sizesLabel: { color: MUTED, marginBottom: 6 },
-  sizesRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 14,
-  },
-  sizeChip: {
-    width: 34,
-    height: 34,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: BORDER,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sizeChipText: { fontWeight: '600' },
+  brand: { marginTop: 2, marginBottom: 14, fontWeight: '600' },
 
   infoBlock: {
     borderTopWidth: 1,
@@ -189,4 +178,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
     textAlign: 'center',
   },
+  notFoundWrap: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
