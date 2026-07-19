@@ -16,6 +16,7 @@ export default function AppTabs() {
         },
       }}
     >
+      {/* 1. Home */}
       <Tabs.Screen
         name="index"
         options={{
@@ -26,6 +27,7 @@ export default function AppTabs() {
         }}
       />
 
+      {/* 2. Add */}
       <Tabs.Screen
         name="add"
         options={{
@@ -36,17 +38,18 @@ export default function AppTabs() {
         }}
       />
 
+      {/* 3. Products */}
       <Tabs.Screen
-        name="product"
+        name="[id]"
         options={{
           title: 'Products',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'cube' : 'cube-outline'} size={22} color={color} />
           ),
-          href: null, 
         }}
       />
 
+      {/* 4. Categories */}
       <Tabs.Screen
         name="categories"
         options={{
@@ -57,6 +60,7 @@ export default function AppTabs() {
         }}
       />
 
+      {/* 5. Analytics */}
       <Tabs.Screen
         name="analytics"
         options={{
