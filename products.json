@@ -8,7 +8,7 @@
     "location_count": 3,
     "location_text": "3 stores",
     "badge_status": "Active",
-    "image_url": "http://nindam.ddns.net/imges_prodcut/T_Shirt_White.jpg"
+    "image_url": "https://i.postimg.cc/1gX6fMt2/1.webp"
   },
   {
     "id": "2",
@@ -19,7 +19,7 @@
     "location_count": 4,
     "location_text": "4 stores",
     "badge_status": "Active",
-    "image_url": "http://nindam.ddns.net/imges_prodcut/T_Shirt_Black.jpg"
+    "image_url": "https://i.postimg.cc/LqWPffgM/2.webp"
   },
   {
     "id": "3",
@@ -30,6 +30,6 @@
     "location_count": 1,
     "location_text": "1 stores",
     "badge_status": "Low in stock",
-    "image_url": "http://nindam.ddns.net/imges_prodcut/Kids_T_Shirt_Pink.jpg"
+    "image_url": "https://i.postimg.cc/3yqGpp03/3.webp"
   }
 ]
