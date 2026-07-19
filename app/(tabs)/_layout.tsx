@@ -38,9 +38,9 @@ export default function AppTabs() {
         }}
       />
 
-      {/* 3. Products */}
+      {/* 3. Products - แก้ไขชื่อ name ให้ถูกต้องตรงกับไฟล์ products.tsx */}
       <Tabs.Screen
-        name="[id]"
+        name="products"
         options={{
           title: 'Products',
           tabBarIcon: ({ color, focused }) => (

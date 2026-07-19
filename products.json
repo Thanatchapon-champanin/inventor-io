@@ -1,35 +1,35 @@
 [
   {
     "id": "1",
-    "name": "Unisex T-Shirt White",
-    "stock": 12,
-    "stock_text": "12 in stock",
-    "category": "T-shirts",
+    "name": "SARIN SS SHIRT Embroidered Unisex T-Shirt",
+    "stock": 24,
+    "stock_text": "24 in stock",
+    "category": "Shirts & Tops",
     "location_count": 3,
-    "location_text": "3 stores",
+    "location_text": "Aisle A1 (Main)",
     "badge_status": "Active",
-    "image_url": "https://i.postimg.cc/1gX6fMt2/1.webp"
+    "image_url": "https://down-th.img.susercontent.com/file/th-11134207-7r992-lzeod4h9l0a1c7.webp"
   },
   {
     "id": "2",
-    "name": "Unisex T-Shirt Black",
-    "stock": 10,
-    "stock_text": "10 in stock",
-    "category": "T-shirts",
+    "name": "Sarin Logo Long Sleeve T-Shirt Light Fabric",
+    "stock": 89,
+    "stock_text": "89 in stock",
+    "category": "T-shirts & Sleeves",
     "location_count": 4,
-    "location_text": "4 stores",
+    "location_text": "Aisle B2",
     "badge_status": "Active",
-    "image_url": "https://i.postimg.cc/LqWPffgM/2.webp"
+    "image_url": "https://down-th.img.susercontent.com/file/th-11134207-81zth-mq6iya3vhhxe04.webp"
   },
   {
     "id": "3",
-    "name": "Kids T-Shirt Pink",
-    "stock": 1,
-    "stock_text": "1 in stock",
-    "category": "T-shirts",
+    "name": "SARIN A Dream Knitwear Special Pattern Summer Edition",
+    "stock": 15,
+    "stock_text": "15 in stock",
+    "category": "Knitwear & Polos",
     "location_count": 1,
-    "location_text": "1 stores",
-    "badge_status": "Low in stock",
-    "image_url": "https://i.postimg.cc/3yqGpp03/3.webp"
+    "location_text": "Warehouse Box 02",
+    "badge_status": "Active",
+    "image_url": "https://down-th.img.susercontent.com/file/th-11134207-81ztj-miysm3bqmcqtf9.webp"
   }
 ]
