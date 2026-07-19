@@ -1,13 +1,71 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import { useColorScheme } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import { MUTED, PRIMARY } from '../../constants/inventor-theme';
 
-import AppTabs from '../../components/app-tabs';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function AppTabs() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AppTabs />
-    </ThemeProvider>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: PRIMARY,
+        tabBarInactiveTintColor: MUTED,
+        headerShown: false,
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="add"
+        options={{
+          title: 'Add',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'} size={22} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="product"
+        options={{
+          title: 'Products',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'cube' : 'cube-outline'} size={22} color={color} />
+          ),
+          href: null, 
+        }}
+      />
+
+      <Tabs.Screen
+        name="categories"
+        options={{
+          title: 'Categories',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'folder' : 'folder-outline'} size={22} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          title: 'Analytics',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'analytics' : 'analytics-outline'} size={22} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
