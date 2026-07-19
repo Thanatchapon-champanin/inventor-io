@@ -6,14 +6,12 @@ import { ThemedText } from '../../components/themed-text';
 import { ThemedView } from '../../components/themed-view';
 import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS, SUCCESS } from '../../constants/inventor-theme';
 
-// Import ข้อมูล JSON มาใช้วิเคราะห์ทางสถิติ
 import productsData from '../../products.json';
 
 export default function AnalyticsScreen() {
-  // คำนวณสถิติจริงจากไฟล์ JSON
   const totalProducts = productsData.length;
-  const totalStock = productsData.reduce((sum, item) => sum + item.stock, 0);
-  const lowStockItems = productsData.filter(item => item.stock <= 5).length;
+  const totalStock = productsData.reduce((sum, item) => sum + Number(item.stock || 0), 0);
+  const lowStockItems = productsData.filter(item => Number(item.stock || 0) <= 5).length;
 
   const PERFORMANCE = [
     { label: 'Total Items Type', value: `${totalProducts} Types`, icon: 'cube-outline' as const },

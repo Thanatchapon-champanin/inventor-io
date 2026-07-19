@@ -1,64 +1,46 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { AppHeader } from '../../components/app-header';
 import { ThemedText } from '../../components/themed-text';
 import { ThemedView } from '../../components/themed-view';
 import { BORDER, CARD, MUTED, PRIMARY, PRIMARY_SOFT, RADIUS } from '../../constants/inventor-theme';
 
-// -----------------------------------------------------------------------
-// Mock data — swap for your real product source
-// -----------------------------------------------------------------------
-type Product = {
-  id: string;
-  name: string;
-  brand: string;
-  stock: number;
-  category: string;
-  location: string;
-  status: 'Active' | 'Sold out';
-  color: string;
-};
+// เปลี่ยนมาดึงข้อมูลจากไฟล์ JSON นอกสุดเพื่อให้ลิ้งค์กันทั้งหมด
+import productsData from '../../products.json';
 
-const PRODUCTS: Product[] = [
-  { id: '1', name: 'Oversized Graphic T-Shirt White', brand: 'Fashion', stock: 25, category: 'Tops', location: 'Main Store', status: 'Active', color: '#F5F5F5' },
-  { id: '2', name: 'High-Waisted Denim Jeans Black', brand: 'Fashion', stock: 14, category: 'Bottoms', location: 'Main Store', status: 'Active', color: '#2C2C2C' },
-  { id: '3', name: 'Pastel Knit Cardigan Yellow', brand: 'Fashion', stock: 8, category: 'Outerwear', location: 'Warehouse A', status: 'Active', color: '#F9E79F' },
-];
-
-// -----------------------------------------------------------------------
-// Product row
-// -----------------------------------------------------------------------
-function ProductRow({ product }: { product: Product }) {
-  const isActive = product.status === 'Active';
+function ProductRow({ product }: { product: any }) {
+  const isActive = product.badge_status === 'Active';
   return (
     <Pressable
       onPress={() => router.push(`/product/${product.id}` as never)}
       style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}>
-      <View style={[styles.thumb, { backgroundColor: product.color }]}>
-        <Ionicons name="pricetag-outline" size={24} color="rgba(0,0,0,0.25)" />
+      
+      {/* ส่วนแสดงรูปภาพสินค้าจริงจาก URL */}
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: product.image_url }} style={styles.productImage} />
       </View>
 
       <View style={styles.rowMain}>
         <ThemedText type="small" style={styles.brandText}>
-          {product.brand}
+          {product.category}
         </ThemedText>
         <ThemedText type="defaultSemiBold" numberOfLines={1}>
           {product.name}
         </ThemedText>
         <ThemedText type="small" style={styles.rowMeta}>
-          Stock: {product.stock} in stock · Category: {product.category}
+          Status: {product.stock_text}
         </ThemedText>
         <ThemedText type="small" style={styles.rowMeta}>
-          Location: {product.location}
+          Available: {product.location_text}
         </ThemedText>
 
         <View style={[styles.statusPill, { backgroundColor: isActive ? PRIMARY_SOFT : '#FCEAEA' }]}>
           <View style={[styles.statusDot, { backgroundColor: isActive ? PRIMARY : '#E14848' }]} />
           <ThemedText type="small" style={{ color: isActive ? PRIMARY : '#E14848', fontWeight: '600' }}>
-            {product.status}
+            {product.badge_status}
           </ThemedText>
         </View>
       </View>
@@ -70,12 +52,9 @@ function ProductRow({ product }: { product: Product }) {
   );
 }
 
-// -----------------------------------------------------------------------
-// Screen
-// -----------------------------------------------------------------------
 export default function ProductsScreen() {
   const [query, setQuery] = useState('');
-  const filtered = PRODUCTS.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()));
+  const filtered = productsData.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <ThemedView style={styles.container}>
@@ -138,10 +117,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 38,
   },
-  searchInput: {
-    flex: 1,
-    fontSize: 13,
-  },
+  searchInput: { flex: 1, fontSize: 13 },
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -151,10 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 38,
   },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
+  addButtonText: { color: '#fff', fontWeight: '600' },
   filterButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -164,7 +137,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 38,
   },
-
   listContent: {
     paddingHorizontal: 20,
     paddingBottom: 24,
@@ -180,24 +152,20 @@ const styles = StyleSheet.create({
     borderColor: BORDER,
     alignItems: 'flex-start',
   },
-  rowPressed: {
-    opacity: 0.9,
-  },
-  thumb: {
+  rowPressed: { opacity: 0.9 },
+  imageContainer: {
     width: 80,
     height: 80,
     borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: 'hidden',
+    backgroundColor: '#F5F5F5',
   },
-  rowMain: {
-    flex: 1,
-    gap: 3,
+  productImage: {
+    width: '100%',
+    height: '100%',
   },
-  rowMeta: {
-    color: MUTED,
-    fontSize: 11,
-  },
+  rowMain: { flex: 1, gap: 3 },
+  rowMeta: { color: MUTED, fontSize: 11 },
   brandText: {
     color: PRIMARY,
     fontWeight: '600',
@@ -214,9 +182,5 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     marginTop: 4,
   },
-  statusDot: {
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-  },
+  statusDot: { width: 5, height: 5, borderRadius: 3 },
 });
